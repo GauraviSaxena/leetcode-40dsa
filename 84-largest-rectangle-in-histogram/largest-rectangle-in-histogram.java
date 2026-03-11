@@ -1,28 +1,95 @@
 class Solution {
-    public int largestRectangleArea(int[] heights) {
-        Stack<Integer> stack = new Stack<>();
-        int maxArea = 0;
-        int n = heights.length;
-
-        for (int i = 0; i <= n; i++) {
-            int currHeight = (i == n) ? 0 : heights[i];
-
-            while (!stack.isEmpty() && currHeight < heights[stack.peek()]) {
-                int height = heights[stack.pop()];
-
-                int width;
-                if (stack.isEmpty()) {
-                    width = i;
-                } else {
-                    width = i - stack.peek() - 1;
-                }
-
-                maxArea = Math.max(maxArea, height * width);
-            }
-
-            stack.push(i);
+    static class Pair
+    {
+        int key ;
+        int val ;
+        Pair(int key , int val)
+        {
+            this.key = key ;
+            this.val = val ;
         }
+    }
+    public static int[] NSL_Solve(int[] arr)
+    {
+        Stack<Pair> stack = new Stack<>() ;
+        int n = arr.length ;
+        int[] ans = new int[n] ;
+        for(int i = 0 ; i < n ; i++)
+        {
+            if(stack.isEmpty())
+            {
+                ans[i] = -1 ;
+            }
+            else if(!stack.isEmpty() && stack.peek().val < arr[i])
+            {
+                ans[i] = stack.peek().key ;
+            }
+            else if(!stack.isEmpty() && stack.peek().val >= arr[i])
+            {
+                while(!stack.isEmpty() && stack.peek().val >= arr[i])
+                {
+                    stack.pop() ;
+                }
+                if(stack.isEmpty())
+                {
+                    ans[i] = -1 ;
+                }
+                else
+                {
+                    ans[i] = stack.peek().key ;
+                }
+            }
+            stack.push(new Pair(i,arr[i])) ;
+        }
+        return ans ;
+    }
 
-        return maxArea;
+    public static int[] NSR_Solve(int[] arr)
+    {
+        Stack<Pair> stack = new Stack<>() ;
+        int n = arr.length ;
+        int[] ans = new int[n] ;
+        for(int i = n-1 ; i >= 0 ; i--)
+        {
+            if(stack.isEmpty())
+            {
+                ans[i] = n ;
+            }
+            else if(!stack.isEmpty() && stack.peek().val < arr[i])
+            {
+                ans[i] = stack.peek().key ;
+            }
+            else if(!stack.isEmpty() && stack.peek().val >= arr[i])
+            {
+                while(!stack.isEmpty() && stack.peek().val >= arr[i])
+                {
+                    stack.pop() ;
+                }
+                if(stack.isEmpty())
+                {
+                    ans[i] = n ;
+                }
+                else
+                {
+                    ans[i] = stack.peek().key ;
+                }
+            }
+            stack.push(new Pair(i,arr[i])) ;
+        }
+        return ans ;
+    }
+    public int largestRectangleArea(int[] heights) {
+        
+        int n = heights.length ;
+        int[] NSL = new int[n] ;
+        int[] NSR = new int[n] ;
+        NSL = NSL_Solve(heights) ;
+        NSR = NSR_Solve(heights) ;
+        int Area = 0 ;
+        for(int i = 0 ; i < n ; i++)
+        {
+            Area = Math.max(Area , (NSR[i]-NSL[i]-1)*heights[i]) ;
+        }
+        return Area ;
     }
 }
