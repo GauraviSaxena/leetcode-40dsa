@@ -7,7 +7,7 @@ class Solution {
         return res;
     }
 
-    private void solve(int i, int[] arr, int target, List<Integer> temp, List<List<Integer>> res) {
+    public void solve(int i, int[] arr, int target, List<Integer> temp, List<List<Integer>> res) {
         if (i == arr.length) {
             if (target == 0) res.add(new ArrayList<>(temp));
             return;
