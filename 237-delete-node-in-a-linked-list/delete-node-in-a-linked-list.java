@@ -8,7 +8,10 @@
  */
 class Solution {
     public void deleteNode(ListNode node) {
-        node.val = node.next.val;       // next ka value copy
-        node.next = node.next.next;     // next node delete
+        if (node == null || node.next == null) return;
+        ListNode nextNode = node.next;
+        node.val = nextNode.val;
+        node.next = nextNode.next;
+        nextNode.next = null;
     }
 }
