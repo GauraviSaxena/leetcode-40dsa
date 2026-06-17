@@ -2,46 +2,22 @@ import java.util.*;
 
 class Solution {
 
-    class Pair implements Comparable<Pair> {
-
-        int start;
-        int finish;
-
-        Pair(int start, int finish) {
-            this.start = start;
-            this.finish = finish;
-        }
-
-        public int compareTo(Pair other) {
-            return Integer.compare(this.finish, other.finish);
-        }
-    }
-
     public int eraseOverlapIntervals(int[][] intervals) {
 
-        int n = intervals.length;
-
-        if (n == 0) return 0;
-
-        Pair[] matrix = new Pair[n];
-
-        for (int i = 0; i < n; i++) {
-            matrix[i] = new Pair(intervals[i][0], intervals[i][1]);
-        }
-
-        Arrays.sort(matrix);
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
 
         int count = 1;
-        int finishTime = matrix[0].finish;
+        int finishTime = intervals[0][1];
 
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i < intervals.length; i++) {
 
-            if (matrix[i].start >= finishTime) {
+            if (intervals[i][0] >= finishTime) {
+
                 count++;
-                finishTime = matrix[i].finish;
+                finishTime = intervals[i][1];
             }
         }
 
-        return n - count;
+        return intervals.length - count;
     }
 }
