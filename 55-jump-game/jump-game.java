@@ -1,35 +1,20 @@
 class Solution {
 
-    Boolean[] dp;
-
     public boolean canJump(int[] nums) {
 
-        dp = new Boolean[nums.length];
+        int maxReach = 0;
 
-        return solve(nums, 0);
-    }
+        for (int i = 0; i < nums.length; i++) {
 
-    public boolean solve(int[] nums, int index) {
-
-        // Last index ya uske aage pahunch gaye
-        if (index >= nums.length - 1) {
-            return true;
-        }
-
-        // Already computed
-        if (dp[index] != null) {
-            return dp[index];
-        }
-
-        // Sab possible jumps try karo
-        for (int jump = 1; jump <= nums[index]; jump++) {
-
-            if (solve(nums, index + jump)) {
-                return dp[index] = true;
+            // Current index reachable nahi hai
+            if (i > maxReach) {
+                return false;
             }
+
+            // Maximum reachable index update karo
+            maxReach = Math.max(maxReach, i + nums[i]);
         }
 
-        // Koi bhi jump successful nahi hua
-        return dp[index] = false;
+        return true;
     }
 }
