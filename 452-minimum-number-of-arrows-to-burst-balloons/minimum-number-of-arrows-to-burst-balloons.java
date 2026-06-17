@@ -2,45 +2,22 @@ import java.util.*;
 
 class Solution {
 
-    class Pair implements Comparable<Pair> {
-
-        int start;
-        int finish;
-
-        Pair(int start, int finish) {
-            this.start = start;
-            this.finish = finish;
-        }
-
-        public int compareTo(Pair other) {
-            return Integer.compare(this.finish, other.finish);
-        }
-    }
-
     public int findMinArrowShots(int[][] points) {
 
-        int n = points.length;
-
-        if(n == 0)
+        if (points.length == 0)
             return 0;
 
-        Pair[] matrix = new Pair[n];
-
-        for(int i = 0; i < n; i++) {
-            matrix[i] = new Pair(points[i][0], points[i][1]);
-        }
-
-        Arrays.sort(matrix);
+        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
 
         int arrows = 1;
-        int finishTime = matrix[0].finish;
+        int finishTime = points[0][1];
 
-        for(int i = 1; i < n; i++) {
+        for (int i = 1; i < points.length; i++) {
 
-            if(matrix[i].start > finishTime) {
+            if (points[i][0] > finishTime) {
 
                 arrows++;
-                finishTime = matrix[i].finish;
+                finishTime = points[i][1];
             }
         }
 
